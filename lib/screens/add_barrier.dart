@@ -42,6 +42,7 @@ class _AddBarrierState extends State<AddBarrier> {
               Row(children: [
                 Expanded(
                     child: TextField(
+                  controller: _textController,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Search Barrier....',
@@ -82,6 +83,21 @@ class _AddBarrierState extends State<AddBarrier> {
                   orientation: CheckboxOrientation.VERTICAL,
                   checkColor: Colors.blue,
                   activeColor: Colors.red),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    if (_textController.text.length > 0) {
+                      allItemList.add(_textController.text);
+                      _textController.clear();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Text is empty"),
+                      ));
+                    }
+                  });
+                },
+                child: Text("add"),
+              ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 MaterialButton(
                   height: 40.0,
