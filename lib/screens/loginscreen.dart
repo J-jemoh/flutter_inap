@@ -8,6 +8,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _textusername = TextEditingController();
+  final _text = TextEditingController();
+
+  bool _validate = false;
+  bool _validatepass = false;
+  @override
+  void dispose() {
+    _text.dispose();
+    _textusername.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,20 +53,43 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const TextField(
+                  child: TextField(
+                    onChanged: (_textusername) {
+                      setState(() {
+                        if (_textusername.isEmpty) {
+                          _validate = true;
+                        } else {
+                          _validate = false;
+                        }
+                      });
+                    },
+                    controller: _textusername,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'User Name',
+                      errorText: _validate ? 'Username Can\'t Be Empty' : null,
                     ),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: const TextField(
+                  child: TextField(
+                    onChanged: (_text) {
+                      setState(() {
+                        if (_text == null) {
+                          _validatepass = true;
+                        } else {
+                          _validatepass = false;
+                        }
+                      });
+                    },
                     obscureText: true,
+                    controller: _text,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
+                      errorText:
+                          _validatepass ? 'Password Can\'t Be Empty' : null,
                     ),
                   ),
                 ),
@@ -73,10 +108,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text('Login',
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterScreen()));
+                        setState(() {
+                          if (_text.text.isEmpty) {
+                            _validatepass = true;
+                          } else {
+                            _validatepass = false;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegisterScreen()));
+                          }
+                        });
                       },
                     )),
                 // Row(

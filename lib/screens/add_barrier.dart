@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_checkbox/grouped_checkbox.dart';
+import 'suggestions.dart';
 
 class AddBarrier extends StatefulWidget {
   const AddBarrier({Key? key}) : super(key: key);
@@ -44,14 +45,14 @@ class _AddBarrierState extends State<AddBarrier> {
                     child: TextField(
                   controller: _textController,
                   decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Search Barrier....',
+                    border: OutlineInputBorder(),
+                    hintText: 'Search your barrier here....',
                   ),
                   onChanged: onItemChanged,
                 )),
               ]),
               Card(
-                color: Colors.cyan,
+                color: Colors.orange,
                 child: Column(children: const <Widget>[
                   ListTile(
                     title: Text(
@@ -90,13 +91,14 @@ class _AddBarrierState extends State<AddBarrier> {
                       allItemList.add(_textController.text);
                       _textController.clear();
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Text is empty"),
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            "You have not searched for any barrier among the list.Search incase its missing click add barrier"),
                       ));
                     }
                   });
                 },
-                child: Text("add"),
+                child: const Text("add barrier"),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 MaterialButton(
@@ -111,7 +113,12 @@ class _AddBarrierState extends State<AddBarrier> {
                     ),
                     Text("Save and Continue"),
                   ]),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SuggestionsBarrier()))
+                  },
                   splashColor: Colors.redAccent,
                 )
               ]),

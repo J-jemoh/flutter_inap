@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'add_barrier.dart';
+import 'locator.dart';
+import 'loginscreen.dart';
 
 class PatientView extends StatefulWidget {
   const PatientView({Key? key}) : super(key: key);
@@ -14,6 +16,38 @@ class _PatientViewState extends State<PatientView> {
         appBar: AppBar(
           title: const Text('Patient Details',
               style: TextStyle(color: Colors.white)),
+          actions: [
+            Theme(
+              data: Theme.of(context).copyWith(
+                  textTheme: TextTheme().apply(bodyColor: Colors.black),
+                  dividerColor: Colors.white,
+                  iconTheme: IconThemeData(color: Colors.white)),
+              child: PopupMenuButton<int>(
+                color: Colors.cyan,
+                itemBuilder: (context) => [
+                  PopupMenuItem<int>(value: 0, child: Text("Setting")),
+                  const PopupMenuItem<int>(
+                      value: 1, child: Text("Privacy Policy page")),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                      value: 2,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Text("Logout")
+                        ],
+                      )),
+                ],
+                onSelected: (item) => selecteditem(context, item),
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -151,7 +185,12 @@ class _PatientViewState extends State<PatientView> {
                               ),
                               Text("View locator"),
                             ]),
-                            onPressed: () => {},
+                            onPressed: () => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Locator()))
+                            },
                             splashColor: Colors.redAccent,
                           ),
                           MaterialButton(
@@ -174,5 +213,23 @@ class _PatientViewState extends State<PatientView> {
             ]),
           ),
         ));
+  }
+}
+
+void selecteditem(BuildContext context, item) {
+  switch (item) {
+    case 0:
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+      break;
+    case 1:
+      print("Privacy Clicked");
+      break;
+    case 2:
+      print("User Logged out");
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false);
+      break;
   }
 }
