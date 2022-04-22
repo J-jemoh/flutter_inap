@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(50),
                     child: const Text(
                       'I-NAP',
                       style: TextStyle(
@@ -111,8 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           if (_text.text.isEmpty) {
                             _validatepass = true;
+                          } else if (_textusername.text.isEmpty) {
+                            _validate = true;
                           } else {
                             _validatepass = false;
+                            _validate = false;
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
