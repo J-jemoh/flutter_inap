@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'patient_view.dart';
+import '/api/participant.dart';
+import '/api/getparticipant.dart';
+import '/models/participant.dart';
+import 'patient_rlshp.dart';
+import 'mockup_patientview.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -8,150 +13,95 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  Participant participantlist = Participant();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Patients List',
-              style: TextStyle(color: Colors.white)),
-        ),
-        body: Column(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text('LTFU Patients',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.cyan,
-                        fontWeight: FontWeight.bold))),
-            Padding(
-                padding: const EdgeInsets.all(10),
-                child: Table(
-                    border: TableBorder.all(width: 1, color: Colors.purple),
-                    children: [
-                      const TableRow(
-                          decoration: BoxDecoration(
-                            color: Colors.cyan,
-                          ),
-                          children: [
-                            Text('Study ID',
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.2,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            Text('Name',
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.2,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            Text('Action',
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.2,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold))
-                          ]),
-                      TableRow(children: [
-                        const Text(
-                          'KCH-0001-000',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'John Doe',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          child: const Text(
-                            'View Data',
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PatientView()));
-                          },
-                        ),
-                      ]),
-                      TableRow(children: [
-                        const Text(
-                          'KCH-0001-000',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'John Doe',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          child: const Text(
-                            'View Data',
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PatientView()));
-                          },
-                        ),
-                      ]),
-                      TableRow(children: [
-                        const Text(
-                          'KCH-0001-000',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'John Doe',
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          child: const Text(
-                            'View Data',
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PatientView()));
-                          },
-                        ),
-                      ]),
-                    ])),
-            Expanded(
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RaisedButton(
-                            padding: const EdgeInsets.all(10),
-                            onPressed: () {},
-                            child: const Text('Refresh',
-                                style: TextStyle(fontSize: 20)),
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            elevation: 5,
-                          ),
-                          RaisedButton(
-                            onPressed: () {},
-                            child: const Text('Contact',
-                                style: TextStyle(fontSize: 20)),
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            elevation: 5,
-                          )
-                        ])))
-          ],
-        ));
+      appBar: AppBar(
+        title:
+            const Text('Patients List', style: TextStyle(color: Colors.white)),
+      ),
+      body: Container(
+          child: FutureBuilder<List>(
+        future: participantlist.getAllParticipants(),
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data?.length,
+              itemBuilder: (context, int i) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PatientView(
+                                  participant_id: snapshot.data![i]),
+                              settings: RouteSettings(
+                                arguments: snapshot.data![i],
+                              )));
+                    },
+                    title: Text(
+                      snapshot.data![i]['study_id'],
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      snapshot.data![i]['participant_name'],
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            return Container(
+              child: Column(children: [
+                Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MockupPatientView()));
+                    },
+                    title: const Text(
+                      "KLM-0000-000",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: const Text(
+                      "John Doe",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MockupPatientView()));
+                    },
+                    title: const Text(
+                      "KCH-0000-001",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: const Text(
+                      "Mary Doe",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+              ]),
+            );
+          }
+        },
+      )),
+    );
   }
 }

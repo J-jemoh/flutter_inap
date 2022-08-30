@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_checkbox/grouped_checkbox.dart';
 import 'patient_view.dart';
+import 'patientlit.dart';
 import 'loginscreen.dart';
 
 class SuggestionsBarrier extends StatefulWidget {
@@ -123,7 +124,7 @@ class _SuggestionsBarrierState extends State<SuggestionsBarrier> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PatientView()))
+                            builder: (context) => const RegisterScreen()))
                   },
                   splashColor: Colors.redAccent,
                 ),
@@ -143,7 +144,7 @@ class _SuggestionsBarrierState extends State<SuggestionsBarrier> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PatientView()))
+                            builder: (context) => const RegisterScreen()))
                   },
                   splashColor: Colors.redAccent,
                 )

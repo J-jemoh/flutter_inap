@@ -10,21 +10,22 @@ import '/api/participant.dart';
 import '/models/participant.dart';
 import 'patient_rlshp.dart';
 import 'suggestions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class PatientView extends StatefulWidget {
-  final participant_id;
+class MockupPatientView extends StatefulWidget {
   // PatientView({required this.participant_id});
   // ignore: non_constant_identifier_names
-  const PatientView({Key? key, required this.participant_id}) : super(key: key);
+  const MockupPatientView({
+    Key? key,
+  }) : super(key: key);
+
   @override
-  _PatientViewState createState() => _PatientViewState(participant_id);
+  _MockupPatientViewState createState() => _MockupPatientViewState();
 }
 
-class _PatientViewState extends State<PatientView> {
+class _MockupPatientViewState extends State<MockupPatientView> {
   // ignore: non_constant_identifier_names
-  final participant_id;
 
-  _PatientViewState(this.participant_id);
   // Getparticipantid participant_id;
   // _PatientViewState(this.participant_id);
   // ignore: non_constant_identifier_names
@@ -32,8 +33,7 @@ class _PatientViewState extends State<PatientView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Participant ${participant_id['study_id']}',
-              style: TextStyle(color: Colors.white)),
+          title: Text('KLM-0000-000', style: TextStyle(color: Colors.white)),
           actions: [
             Theme(
               data: Theme.of(context).copyWith(
@@ -73,12 +73,13 @@ class _PatientViewState extends State<PatientView> {
             Column(
               children: <Widget>[
                 Card(
-                  child: Column(children: <Widget>[
+                  color: Colors.grey,
+                  child: Column(children: const <Widget>[
                     ListTile(
                       title: Text(
-                        "STUDY ID: ${participant_id['study_id']} ",
+                        "PATIENT ID: KLM-0000-000 ",
                         style: TextStyle(
-                            color: Colors.cyan, fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ]),
@@ -87,32 +88,31 @@ class _PatientViewState extends State<PatientView> {
                     // ignore: prefer_const_literals_to_create_immutables
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: const <Widget>[
                       Expanded(
                         child: ListTile(
-                          title: Text("Gender: ${participant_id['gender']}",
+                          title: Text("Gender: M",
                               style: TextStyle(color: Colors.cyan)),
-                          subtitle: Text(
-                              'Nickname: ${participant_id['participant_nickname']}',
+                          subtitle: Text('Facility: Lumumba',
                               style: TextStyle(color: Colors.cyan)),
                         ),
                       ),
                       Expanded(
                         child: ListTile(
-                          title: Text("Age: ${participant_id['age']}",
+                          title: Text("Age: 23 yrs",
                               style: TextStyle(color: Colors.cyan)),
-                          subtitle: Text(
-                              'Residence: ${participant_id['location']}',
+                          subtitle: Text('Residence: Mamboleo',
                               style: TextStyle(color: Colors.cyan)),
                         ),
                       ),
                     ])),
                 Card(
+                  color: Colors.grey,
                   child: Column(children: const [
                     ListTile(
-                        title: Text("Caregiver details",
+                        title: Text("Buddy/Caregiver",
                             style: TextStyle(
-                                color: Colors.cyan,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold)))
                   ]),
                 ),
@@ -120,21 +120,97 @@ class _PatientViewState extends State<PatientView> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(children: [
+                        Row(children: const [
                           Expanded(
                               child: ListTile(
-                            title: Text(
-                                "Name: ${participant_id['caregiver_name']}"),
-                            subtitle: Text(
-                                "Phone: ${participant_id['caregiver_contact_phone']}",
+                            title: Text("Name: John Test "),
+                            subtitle: Text("Phone: +25476542312453",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           )),
                           Expanded(
                               child: ListTile(
-                            title: Text(
-                                "Relationship: ${participant_id['relationship_with_participant']}"),
+                            title: Text("Relationship: biological father"),
                             subtitle: Text(""),
                           )),
+                        ]),
+                      ]),
+                ),
+                Card(
+                  color: Colors.grey,
+                  child: Column(children: const [
+                    ListTile(
+                        title: Text("History",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)))
+                  ]),
+                ),
+                Card(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(children: const [
+                          Expanded(
+                              child: ListTile(
+                            title: Text("Last TCA: 2021-02-03  "),
+                            subtitle: Text(" Next TCA:2021-03-03",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          )),
+                          Expanded(
+                              child: ListTile(
+                            title: Text("ART initiation date: 2021-01-03  "),
+                            subtitle: Text("WHO stage:WHO stage 1",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          )),
+                        ]),
+                      ]),
+                ),
+                Card(
+                  color: Colors.grey,
+                  child: Column(children: const [
+                    ListTile(
+                        title: Text("Viral Load",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)))
+                  ]),
+                ),
+                Card(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(children: const [
+                          Expanded(
+                            child: ListTile(
+                              title: Text("VL Copies: 100copies  "),
+                              subtitle: Text("Last VL Date:2021-03-03",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ]),
+                      ]),
+                ),
+                Card(
+                  color: Colors.grey,
+                  child: Column(children: const [
+                    ListTile(
+                        title: Text("LTFU history",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)))
+                  ]),
+                ),
+                Card(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(children: const [
+                          Expanded(
+                            child: ListTile(
+                              title: Text("Patient has been an LTFU before."),
+                            ),
+                          ),
                         ]),
                       ]),
                 ),
@@ -230,10 +306,10 @@ class _PatientViewState extends State<PatientView> {
                           textColor: Colors.white,
                           child: Row(children: const [
                             Icon(
-                              Icons.person,
+                              Icons.people,
                               color: Colors.white,
                             ),
-                            Text("Patient rlshp"),
+                            Text("Relationship"),
                           ]),
                           onPressed: () => {
                             Navigator.push(
@@ -255,7 +331,7 @@ class _PatientViewState extends State<PatientView> {
                             ),
                             Text("Contact"),
                           ]),
-                          onPressed: () => {},
+                          onPressed: () => {launch("tel://+2547345678434")},
                           splashColor: Colors.redAccent,
                         )
                       ]))

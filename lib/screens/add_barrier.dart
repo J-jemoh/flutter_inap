@@ -73,33 +73,59 @@ class _AddBarrierState extends State<AddBarrier> {
                       fontWeight: FontWeight.bold,
                     )),
               )),
-              GroupedCheckbox(
-                  itemList: newDataList,
-                  checkedItemList: checkedItemList,
-                  onChanged: (itemList) {
+              Card(
+                child: Column(children: [
+                  GroupedCheckbox(
+                      itemList: newDataList,
+                      checkedItemList: checkedItemList,
+                      onChanged: (itemList) {
+                        setState(() {
+                          checkedItemList = itemList;
+                        });
+                      },
+                      orientation: CheckboxOrientation.VERTICAL,
+                      checkColor: Colors.blue,
+                      activeColor: Colors.red),
+                ]),
+              ),
+              Card(
+                  child: Column(children: [
+                TextButton(
+                  onPressed: () {
                     setState(() {
-                      checkedItemList = itemList;
+                      if (_textController.text.length > 0) {
+                        allItemList.add(_textController.text);
+                        _textController.clear();
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              "You have not searched for any barrier among the list.Search incase its missing click add barrier"),
+                        ));
+                      }
                     });
                   },
-                  orientation: CheckboxOrientation.VERTICAL,
-                  checkColor: Colors.blue,
-                  activeColor: Colors.red),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    if (_textController.text.length > 0) {
-                      allItemList.add(_textController.text);
-                      _textController.clear();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                            "You have not searched for any barrier among the list.Search incase its missing click add barrier"),
-                      ));
-                    }
-                  });
-                },
-                child: const Text("add barrier"),
+                  child: const Text("add barrier"),
+                ),
+              ])),
+              Card(
+                child: Column(children: const [
+                  ListTile(
+                      title: Text("Comments/Additioanal Notes",
+                          style: TextStyle(
+                              color: Colors.cyan, fontWeight: FontWeight.bold)))
+                ]),
               ),
+              Card(
+                  child: Column(children: const [
+                TextField(
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  minLines: 1,
+                  maxLines: 7,
+                ),
+                SizedBox(height: 30),
+              ])),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 MaterialButton(
                   height: 40.0,
